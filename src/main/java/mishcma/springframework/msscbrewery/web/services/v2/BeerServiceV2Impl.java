@@ -1,6 +1,5 @@
 package mishcma.springframework.msscbrewery.web.services.v2;
 
-import mishcma.springframework.msscbrewery.web.model.BeerDto;
 import mishcma.springframework.msscbrewery.web.model.v2.BeerDtoV2;
 import org.springframework.stereotype.Service;
 
