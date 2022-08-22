@@ -1,15 +1,20 @@
 package mishcma.springframework.msscbrewery.web.controller;
 
-import mishcma.springframework.msscbrewery.web.model.BeerDto;
 import mishcma.springframework.msscbrewery.web.model.CustomerDto;
 import mishcma.springframework.msscbrewery.web.services.CustomerService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+@Validated
 @RequestMapping("/api/v1/customer")
 @RestController
 public class CustomerController {
@@ -26,7 +31,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity handlePost(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity handlePost(@Valid @RequestBody CustomerDto customerDto) {
         CustomerDto savedDto = customerService.saveNewCustomer(customerDto);
 
         HttpHeaders headers = new HttpHeaders();
@@ -36,7 +41,7 @@ public class CustomerController {
     }
 
     @PutMapping("/{customerId}")
-    public ResponseEntity handleUpdate(@PathVariable UUID customerId, @RequestBody CustomerDto customerDto) {
+    public ResponseEntity handleUpdate(@PathVariable UUID customerId, @Valid @RequestBody CustomerDto customerDto) {
         customerService.updateCustomer(customerId, customerDto);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -46,5 +51,16 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void handleDelete(@PathVariable UUID customerId) {
         customerService.deleteById(customerId);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public List<String> validationErrorHandler(ConstraintViolationException exception) {
+        List<String> errors = new ArrayList<>(exception.getConstraintViolations().size());
+
+        exception.getConstraintViolations().forEach(constraintValidation -> {
+            errors.add(constraintValidation.getPropertyPath() + " : " + constraintValidation.getMessage());
+        });
+
+        return errors;
     }
 }
