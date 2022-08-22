@@ -53,14 +53,4 @@ public class CustomerController {
         customerService.deleteById(customerId);
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public List<String> validationErrorHandler(ConstraintViolationException exception) {
-        List<String> errors = new ArrayList<>(exception.getConstraintViolations().size());
-
-        exception.getConstraintViolations().forEach(constraintValidation -> {
-            errors.add(constraintValidation.getPropertyPath() + " : " + constraintValidation.getMessage());
-        });
-
-        return errors;
-    }
 }
