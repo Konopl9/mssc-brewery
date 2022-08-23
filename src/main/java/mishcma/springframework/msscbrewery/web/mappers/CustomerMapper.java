@@ -4,10 +4,10 @@ import mishcma.springframework.msscbrewery.domain.Customer;
 import mishcma.springframework.msscbrewery.web.model.CustomerDto;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(uses = DateMapper.class)
 public interface CustomerMapper {
 
-    CustomerDto customerToCustomerDto(Customer customer);
+    CustomerDto CustomerToCustomerDto(Customer customer);
 
-    Customer customerDtoToCustomer(CustomerDto customerDto);
+    Customer CustomerDtoToCustomer(CustomerDto customerDto);
 }

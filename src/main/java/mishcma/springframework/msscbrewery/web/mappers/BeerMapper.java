@@ -4,10 +4,10 @@ import mishcma.springframework.msscbrewery.domain.Beer;
 import mishcma.springframework.msscbrewery.web.model.BeerDto;
 import org.mapstruct.Mapper;
 
-@Mapper(uses = {DateMapper.class})
+@Mapper(uses = DateMapper.class)
 public interface BeerMapper {
 
-    BeerDto beerToBeerDto(Beer beer);
+    BeerDto BeerToBeerDto(Beer beer);
 
-    Beer beerDtoToBeer(BeerDto dto);
+    Beer BeerDtoToBeer(BeerDto beerDto);
 }
